@@ -662,12 +662,12 @@ void loop() {
       }
       //resetting ball position if it goes off-screen and adding score to CPU
       if(bx < -10){
-        bx=63;
+        bx=115;
         cs +=1;
       }
       //resetting ball position if it goes off-screen and adding score to CPU
       if(bx>130){
-        bx = 63;
+        bx = 15;
         ps +=1;
       }
       //win lose conditions
