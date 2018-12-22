@@ -1,12 +1,12 @@
-//Pong Game
+
+
+//screen = 64x128 pixels
 #include <Arduboy.h>
 Arduboy ad;
 
 #define WIDTH 128
 #define HEIGHT 62
 
-//Image bitmaps
-//Xmas Message
 const unsigned char image[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -138,7 +138,7 @@ const unsigned char image[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   
 };
-//Pong title screen
+
 const unsigned char image2[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   0x00, 0xe0, 0xe0, 0xe0, 0xe0, 0xe0, 0xe0, 0x80, 
@@ -270,7 +270,6 @@ const unsigned char image2[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   
 };
-//win screen
 const unsigned char image3[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -402,7 +401,6 @@ const unsigned char image3[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   
 };
-//game over screen
 const unsigned char image4[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   0x00, 0x80, 0x80, 0x80, 0xa0, 0xf0, 0xf0, 0xf0, 
@@ -534,34 +532,33 @@ const unsigned char image4[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   
 };
-//gamestate and just pressed constatns
+
 int gs = 0;
 int jp = 0;
 
-//ball's location + speed
+//ball's location:
 int bx = 62;
 int by = 0;
 int bs = 4;
 
-//ball direction right/down
+//ball direction
 int br = -1;
 int bd = 1;
 
-//paddle width,height,x,y
+//paddle
 int pw = 4;
 int ph = 9;
 int px=0;
 int py = 0;
 
-//computer paddle y,x,speed,and score
+//computer paddle
 int cpy = 0;
 int cpx = 127-pw;
 int ps = 0;
 int cs = 0;
-//counter for delay
+
 int counter = 0;
 
-//reset function
 void resetgame(){
   bx=63;
   ps=0;
@@ -581,7 +578,6 @@ void loop() {
     return;
   }
   ad.clear();
-//switch gamestate
   switch(gs){
     case 0:
       ad.drawBitmap(0,0,image2,WIDTH,HEIGHT,1);
@@ -595,7 +591,6 @@ void loop() {
       ad.drawBitmap(0,-5, image, WIDTH,HEIGHT,1);
       ad.setCursor(10,55);
       ad.print("PRESS   TO CONTINUE");
-      //blinking A button
       counter +=1;
       if(counter <60){
         ad.setCursor(46,55);
@@ -610,8 +605,7 @@ void loop() {
       }
       break;
     case 2:
-      //gameplay 
-      //print names and scores
+      //gameplay screen
       ad.setCursor(0,0);
       ad.print("TIM:");
       ad.setCursor(25,0);
@@ -620,7 +614,6 @@ void loop() {
       ad.print("CPU:");
       ad.setCursor(118,0);
       ad.print(cs);
-      //draw ball and set speeds and positions
       ad.fillRect(bx, by,bs,bs, WHITE);
       if(br==1){
         bx+=1;
@@ -640,18 +633,14 @@ void loop() {
       if(by+bs ==63){
         bd = -1;
       }
-      //draw player paddle
       ad.fillRect(px,py,pw,ph,WHITE);
-      //paddle movement
       if(ad.pressed(UP_BUTTON) and py >0){
         py -=1;
       }
       if(ad.pressed(DOWN_BUTTON) and py+ph <63){
         py +=1;
       }
-      //draw ball
       ad.fillRect(cpx,cpy,pw,ph,WHITE);
-      //cpu movements
       if(bx >115 or rand()%20==1){
         if(by<cpy){
           cpy -=1;
@@ -660,17 +649,14 @@ void loop() {
           cpy +=1;
         }
       }
-      //resetting ball position if it goes off-screen and adding score to CPU
       if(bx < -10){
-        bx=63;
+        bx=115;
         cs +=1;
       }
-      //resetting ball position if it goes off-screen and adding score to CPU
       if(bx>130){
-        bx = 63;
+        bx = 15;
         ps +=1;
       }
-      //win lose conditions
       if(ps==5){
         gs = 3;
       }
@@ -705,7 +691,6 @@ void loop() {
       }
       break;
   }
-  //reset justpressed to 0
   if(ad.notPressed(A_BUTTON)){
     jp = 0;
   }
